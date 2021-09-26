@@ -6,6 +6,7 @@ The motivation of this project is to practice very basic NLP techniques, and to 
 
 ## Results
 ### Training Results
+```
 Epoch 1/50
 377/377 [==============================] - 18s 40ms/step - loss: 6.9700 - accuracy: 0.0593
 Epoch 2/50
@@ -17,6 +18,7 @@ Epoch 49/50
 377/377 [==============================] - 13s 33ms/step - loss: 0.4641 - accuracy: 0.8610
 Epoch 50/50
 377/377 [==============================] - 13s 33ms/step - loss: 0.4633 - accuracy: 0.8631
+```
 
 ### Training Graph
 ![Training Graph](results.png)
