@@ -73,10 +73,9 @@ def create_model(total_words, max_sequence_len):
     model.add(Bidirectional(LSTM(150)))
     model.add(Dense(total_words, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    return model.predict
+    return model
 
 def train_model(model, xs, ys):
-    # train the model
     hist = model.fit(xs, ys, epochs=100, verbose=1)
     return hist
 
@@ -92,25 +91,18 @@ def generate_text(model, tokenizer, max_sequence_len, next_words=20):
                 output_word = word
                 break
         seed_text += " " + output_word
-    return
-
-seed_text = "I made a poetry machine"
-next_words = 20
-
-for _ in range(next_words):
-    token_list = tokenizer.texts_to_sequences([seed_text])[0]
-    token_list = pad_sequences([token_list], maxlen=max_sequence_len - 1, padding='pre')
-    predicted = model.predict_classes(token_list, verbose=0)
-    output_word = ""
-    for word, index in tokenizer.word_index.items():
-        if(index == predicted):
-            output_word = word
-            break
-    seed_text += " " + output_word
-print(seed_text)
+    return seed_text
 
 def main():
-    
+    datastore = read_data(IRISH_POETRY)
+    tokenizer, total_words = get_tokenizer(datastore)
+    input_sequences, max_sequence_len = sentences_to_sequences(tokenizer, datastore)
+    padded_input_sequences = pad_input_sequences(input_sequences, max_sequence_len)
+    xs, ys = data_to_train_data(padded_input_sequences, total_words)
+    model = create_model(total_words, max_sequence_len)
+    train_model(model, xs, ys)
+    generate_text(model, tokenizer, max_sequence_len)
     return
 
-main()
+if __name__ == '__main__':
+    main()
